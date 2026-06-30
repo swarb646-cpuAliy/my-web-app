@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة منصة الخليج</title>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+        // الإعدادات الصحيحة لمشروعك
+        const firebaseConfig = {
+            apiKey: "AIzaSyASpeC2K1Cdcal9bWNS4LwUiR8iUyMXJOQ",
+            authDomain: "gulf-services-cloud.firebaseapp.com",
+            databaseURL: "https://gulf-services-cloud-default-rtdb.firebaseio.com",
+            projectId: "gulf-services-cloud",
+            storageBucket: "gulf-services-cloud.firebasestorage.app",
+            messagingSenderId: "694980593003",
+            appId: "1:694980593003:web:7a12b6f5e604eb034d782e",
+            measurementId: "G-JB9HZT7T0K"
+        };
+        const db = getDatabase(initializeApp(firebaseConfig));
+        const dbRef = ref(db, '/');
+
+        onValue(dbRef, (snapshot) => {
+            const data = snapshot.val() || { services: [] };
+            window.db = data;
+            document.getElementById('p-name').value = data.platformName || "";
+            document.getElementById('p-desc').value = data.platformDesc || "";
+            document.getElementById('p-wa').value = data.phonePublic || "";
+            document.getElementById('p-link').value = data.platformLink || "";
+            document.getElementById('p-link-icon').value = data.pLinkIcon || "🔗";
+            document.getElementById('p-marquee-text').value = data.marqueeText || "";
+            renderServices();
+        });
+
+        window.saveToCloud = function(data) {
+            set(dbRef, data).then(() => alert("تم الحفظ في السحابة بنجاح ✅"));
+        };
+    </script>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; text-align: right; }
+        .section { background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .btn-save { background: #25d366; color: white; }
+        .btn-add { background: #075e54; color: white; }
+        .service-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
+        .btn-edit { color: #2196F3; cursor: pointer; font-weight: bold; margin-left: 10px; }
+        .btn-delete { color: #f44336; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+<script>let pass=prompt("أدخل رمز الدخول:"); if(pass!=="85858"){alert("خطأ!"); window.location.href="/";}</script>
+
+<div class="section">
+    <h2>⚙️ هوية المنصة</h2>
+    <input type="text" id="p-name" placeholder="اسم المنصة">
+    <textarea id="p-desc" placeholder="وصف المنصة"></textarea>
+    <input type="text" id="p-wa" placeholder="رقم واتساب الإدارة">
+    <input type="text" id="p-link-icon" placeholder="الأيقونة">
+    <input type="text" id="p-link" placeholder="الرابط الخارجي">
+    <input type="text" id="p-marquee-text" placeholder="نص الشريط">
+    <button class="btn-save" onclick="saveID()">حفظ الإعدادات ✅</button>
+</div>
+
+<div class="section">
+    <h2 id="form-title">🏗️ إضافة خدمة</h2>
+    <input type="text" id="s-icon" placeholder="الأيقونة">
+    <input type="text" id="s-name" placeholder="اسم الخدمة">
+    <input type="text" id="s-price" placeholder="السعر">
+    <input type="text" id="s-wa" placeholder="واتساب الخدمة (اختياري)">
+    <textarea id="s-desc" placeholder="الوصف"></textarea>
+    <button class="btn-add" id="main-btn" onclick="addService()">إضافة للموقع +</button>
+</div>
+
+<div class="section">
+    <h2>📦 الخدمات الحالية</h2>
+    <div id="services-list"></div>
+</div>
+
+<script>
+    let editIndex = -1;
+    window.saveID = function() {
+        window.db.platformName = document.getElementById('p-name').value;
+        window.db.platformDesc = document.getElementById('p-desc').value;
+        window.db.phonePublic = document.getElementById('p-wa').value;
+        window.db.platformLink = document.getElementById('p-link').value;
+        window.db.pLinkIcon = document.getElementById('p-link-icon').value;
+        window.db.marqueeText = document.getElementById('p-marquee-text').value;
+        saveToCloud(window.db);
+    }
+    window.addService = function() {
+        const s = {
+            i: document.getElementById('s-icon').value,
+            n: document.getElementById('s-name').value,
+            p: document.getElementById('s-price').value,
+            w: document.getElementById('s-wa').value,
+            d: document.getElementById('s-desc').value
+        };
+        if(!window.db.services) window.db.services = [];
+        if(editIndex === -1) { window.db.services.push(s); } else { window.db.services[editIndex] = s; editIndex = -1; }
+        saveToCloud(window.db);
+    }
+    window.renderServices = function() {
+        document.getElementById('services-list').innerHTML = (window.db.services || []).map((s, i) => `
+            <div class="service-item">
+                <span>${s.i} ${s.n}</span>
+                <div>
+                    <span class="btn-edit" onclick="editService(${i})">تعديل</span>
+                    <span class="btn-delete" onclick="deleteService(${i})">حذف</span>
+                </div>
+            </div>`).join('');
+    }
+    window.deleteService = function(i) { window.db.services.splice(i,1); saveToCloud(window.db); }
+    window.editService = function(i) {
+        editIndex = i;
+        const s = window.db.services[i];
+        document.getElementById('s-icon').value = s.i;
+        document.getElementById('s-name').value = s.n;
+        document.getElementById('s-price').value = s.p;
+        document.getElementById('s-wa').value = s.w;
+        document.getElementById('s-desc').value = s.d;
+        window.scrollTo(0,0);
+    }
+</script>
+</body>
+</html>
