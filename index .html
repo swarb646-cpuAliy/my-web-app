@@ -1,28 +1,16 @@
-<!DOCTYPE html> 
-<html lang="ar" dir="rtl"> 
-<head> 
-    <meta name="google-site-verification" content="HlI1fl9QXc8MRZRM4QiIMjR8Xr3eEx57uj9naRNM058" />
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>منصة الخليج |اكاديمية وتس آب السريعة</title>
-    <link rel="manifest" href="/manifest.json">
-    <meta property="og:description" content=" لتقديم كافة الخدمات التعليمية بجودة واحترافية">
-    <meta property="og:image" content="https://app.gulf-platform.com/preview.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://app.gulf-platform.com/preview.jpg">
-    
-    <link rel="canonical" href="https://app.gulf-platform.com/">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة الخليج | أكاديمية واتساب السريعة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
         const db = getDatabase(initializeApp({
-            apiKey: "AIzaSyASpeC2K1Cdcal9bWNS4Lwl",
-            databaseURL: "https://gulf-services-cloud-default-rtdb.firebaseio.com",
-            projectId: "gulf-services-cloud"
+            databaseURL: "https://gulf-services-cloud-default-rtdb.firebaseio.com"
         }));
 
         onValue(ref(db, '/'), (snapshot) => {
@@ -30,135 +18,122 @@
             if(!data) return;
             window.db = data;
             
-            document.getElementById("p-title").innerText = data.platformName || "GULF 4000"; 
+            document.getElementById("p-title").innerText = data.platformName || "منصة الخليج";
             document.getElementById("p-desc").innerText = data.platformDesc || "";
             
             const marquee = document.getElementById("marquee-bar");
-            if (data.marqueeText) { 
-                marquee.style.display = "block"; 
-                document.getElementById("visitor-marquee").innerText = data.marqueeText; 
+            if (data.marqueeText) {
+                marquee.style.display = "block";
+                document.getElementById("visitor-marquee").innerText = data.marqueeText;
                 document.getElementById("main-header").style.top = "31px";
-            } else {
-                marquee.style.display = "none"; 
-                document.getElementById("main-header").style.top = "0";
             }
 
             const linkBtn = document.getElementById("p-link-url");
             if (data.platformLink) {
                 linkBtn.href = data.platformLink;
                 linkBtn.style.display = "flex";
-                document.getElementById("p-link-icon-content").innerText = data.pLinkIcon || "🔗"; 
-            } else {
-                linkBtn.style.display = "none";
+                document.getElementById("p-link-icon-content").innerText = data.pLinkIcon || "🔗";
             }
-            render(); 
+            render();
         });
+
+        // جعل الدوال متاحة عالمياً
+        window.render = render;
+        window.openDetails = openDetails;
+        window.closeModal = closeModal;
+        window.contactAdmin = contactAdmin;
+        window.showConfirmation = showConfirmation;
+        window.finalRedirect = finalRedirect;
     </script>
-    <style> 
-        :root { --main: #075e54; --wa: #25d366; --bg: #f4f7f6; --accent: #ffcc00; } 
-        body { font-family: sans-serif; background: var(--bg); margin: 0; text-align: center; } 
-        .top-marquee-container { background: #ff0000; color: white; padding: 6px 0; font-weight: bold; font-size: 13px; display: none; overflow: hidden; white-space: nowrap; width: 100%; position: fixed; top: 0; z-index: 1002; } 
-        .marquee-text { display: inline-block; padding-left: 100%; animation: scroll-left-to-right 35s linear infinite; } 
-        @keyframes scroll-left-to-right { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } } 
-        .header { background: var(--main); padding: 15px 10px; position: fixed; top: 0; width: 100%; z-index: 1001; color: white; border-radius: 0 0 25px 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); } 
+    <style>
+        :root { --main: #075e54; --wa: #25d366; --bg: #f4f7f6; --accent: #ffcc00; }
+        body { font-family: sans-serif; background: var(--bg); margin: 0; text-align: center; }
+        .top-marquee-container { background: #ff0000; color: white; padding: 6px 0; font-weight: bold; font-size: 13px; display: none; overflow: hidden; white-space: nowrap; width: 100%; position: fixed; top: 0; z-index: 1002; }
+        .marquee-text { display: inline-block; padding-left: 100%; animation: scroll-left-to-right 35s linear infinite; }
+        @keyframes scroll-left-to-right { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        .header { background: var(--main); padding: 15px 10px; position: fixed; top: 0; width: 100%; z-index: 1001; color: white; border-radius: 0 0 25px 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         .header-top-row { display: flex; align-items: center; justify-content: space-between; max-width: 95%; margin: 0 auto; }
         .title-box { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px); border: 1px solid rgba(255, 255, 255, 0.2); padding: 5px 20px; border-radius: 12px; flex-grow: 1; margin: 0 10px; }
         #p-title { margin: 0; font-size: 18px; font-weight: bold; color: var(--accent); }
-        .admin-wa { font-size: 24px; cursor: pointer; color: #25d366; display: block !important; } 
-        .platform-link-icon { font-size: 18px; color: white; text-decoration: none; background: rgba(255,255,255,0.2); width: 35px; height: 35px; display: none; align-items: center; justify-content: center; border-radius: 50%; } 
+        .admin-wa { font-size: 24px; cursor: pointer; color: #25d366; display: block !important; }
+        .platform-link-icon { font-size: 18px; color: white; text-decoration: none; background: rgba(255,255,255,0.2); width: 35px; height: 35px; display: none; align-items: center; justify-content: center; border-radius: 50%; }
         .glass-panel { background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(8px); border-radius: 15px; margin: 12px 20px 0 20px; padding: 10px; max-height: 80px; overflow-y: auto; font-size: 13px; border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; }
-        .container { padding: 15px; max-width: 500px; margin: 215px auto 20px auto; position: relative; z-index: 1; } 
-        .card { background: white; border-radius: 18px; padding: 18px; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: right; border: 1px solid #f0f0f0; } 
-        .btn-more { background: #e8f5e9; border: none; padding: 8px 16px; border-radius: 10px; cursor: pointer; font-weight: bold; color: var(--main); } 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: flex-end; } 
-        .modal-content { background: white; width: 100%; max-width: 500px; max-height: 80vh; border-radius: 30px 30px 0 0; display: flex; flex-direction: column; padding: 20px; text-align: right; } 
+        .container { padding: 15px; max-width: 500px; margin: 215px auto 20px auto; position: relative; z-index: 1; }
+        .card { background: white; border-radius: 18px; padding: 18px; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: right; border: 1px solid #f0f0f0; }
+        .btn-more { background: #e8f5e9; border: none; padding: 8px 16px; border-radius: 10px; cursor: pointer; font-weight: bold; color: var(--main); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: flex-end; }
+        .modal-content { background: white; width: 100%; max-width: 500px; max-height: 80vh; border-radius: 30px 30px 0 0; display: flex; flex-direction: column; padding: 20px; text-align: right; }
         .modal-body { overflow-y: auto; flex-grow: 1; margin-bottom: 15px; }
         #confirmation-area { display: none; background: #f9f9f9; padding: 15px; border-radius: 15px; border: 1px solid #eee; margin-bottom: 15px; text-align: center; }
         .btn-accept { background: var(--main); color: white; border: none; padding: 12px 25px; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%; font-size: 16px; }
-        .btn-order { background: var(--wa); color: white; border: none; padding: 16px; border-radius: 15px; width: 100%; font-weight: bold; cursor: pointer; font-size: 16px; } 
-    </style> 
-</head> 
-<body> 
-    <div id="marquee-bar" class="top-marquee-container"><div id="visitor-marquee" class="marquee-text"></div></div> 
-    <div class="header" id="main-header"> 
+        .btn-order { background: var(--wa); color: white; border: none; padding: 16px; border-radius: 15px; width: 100%; font-weight: bold; cursor: pointer; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <div id="marquee-bar" class="top-marquee-container"><div id="visitor-marquee" class="marquee-text"></div></div>
+    <div class="header" id="main-header">
         <div class="header-top-row">
-            <i class="fab fa-whatsapp admin-wa" onclick="contactAdmin()"></i> 
+            <i class="fab fa-whatsapp admin-wa" onclick="contactAdmin()"></i>
             <div class="title-box"> <h1 id="p-title">جاري التحميل..</h1> </div>
             <a href="#" id="p-link-url" class="platform-link-icon" target="_blank"><span id="p-link-icon-content"></span></a>
         </div>
         <div class="glass-panel"> <p id="p-desc" style="margin:0; white-space:pre-wrap;"></p> </div>
-    </div> 
-    <div class="container" id="main-list"></div> 
-    
-    <div id="details-view" class="modal"> 
-        <div class="modal-content"> 
-            <h2 id="m-title" style="color: var(--main); margin-bottom: 10px;"></h2> 
+    </div>
+    <div class="container" id="main-list"></div>
+    <div id="details-view" class="modal">
+        <div class="modal-content">
+            <h2 id="m-title" style="color: var(--main); margin-bottom: 10px;"></h2>
             <div id="confirmation-area">
                 <p id="confirm-msg-top" style="margin:0; font-weight: bold;"></p>
                 <p id="confirm-msg-sub" style="margin:5px 0; font-size: 13px;"></p>
                 <button class="btn-accept" onclick="finalRedirect()">قـبـول وتـحـويـل</button>
             </div>
-            <div class="modal-body"> <p id="m-desc" style="white-space:pre-wrap;"></p> </div> 
-            <button id="order-btn-main" class="btn-order" onclick="showConfirmation()">طلب الخدمة عبر واتساب 🟢</button> 
-            <button onclick="closeModal()" style="margin-top:10px; border:none; background:none; color:#aaa; font-weight: bold; cursor: pointer;">إغلاق</button> 
-        </div> 
-    </div> 
-
-<script> 
-let currentS = null; 
-
-function render() { 
-    document.getElementById("main-list").innerHTML = (window.db.services || []).map((s, i) => `
-        <div class="card">
-            <strong style="font-size: 17px;">${s.i || "📦"} ${s.n}</strong>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
-                <span style="color:var(--main); font-weight:bold;">${s.p}</span>
-                <button class="btn-more" onclick="openDetails(${i})">التفاصيل</button>
-            </div>
-        </div>`).join(""); 
-} 
-
-function openDetails(i) { 
-    currentS = window.db.services[i]; 
-    document.getElementById("m-title").innerText = currentS.n; 
-    document.getElementById("m-desc").innerText = currentS.d; 
-    document.getElementById("confirmation-area").style.display = "none";
-    document.getElementById("order-btn-main").style.display = "block";
-    document.getElementById("details-view").style.display = "flex"; 
-} 
-
-function closeModal() { document.getElementById("details-view").style.display = "none"; } 
-
-function formatPhone(p) {
-    let phone = (p || "").replace(/\D/g, "");
-    if (phone.startsWith("05")) phone = "966" + phone.substring(1);
-    return phone;
-}
-
-function contactAdmin() { 
-    window.location.href = "https://wa.me/" + formatPhone(window.db.phonePublic); 
-} 
-
-function showConfirmation() {
-    const confirmTop = document.getElementById("confirm-msg-top");
-    const confirmSub = document.getElementById("confirm-msg-sub");
-    
-    if (currentS.w && currentS.w.trim().length > 5) {
-        confirmTop.innerText = "Ref: شكراً لثقتك بنا ❤️";
-        confirmSub.innerText = "سيتم تحويلك الآن إلى مقدم الخدمة لإكمال طلبك.";
-    } else {
-        confirmTop.innerText = "Ref: شكراً لثقتكم بنا ❤️";
-        confirmSub.innerText = "سيتم تحويلك الآن إلى المدير لتلبية طلبك.";
-    }
-    document.getElementById("confirmation-area").style.display = "block";
-    document.getElementById("order-btn-main").style.display = "none";
-}
-
-function finalRedirect() {
-    let targetPhone = (currentS.w && currentS.w.trim().length > 5) ? formatPhone(currentS.w) : formatPhone(window.db.phonePublic);
-    let message = "مرحباً، أريد طلب خدمة: " + currentS.n;
-    window.location.href = "https://wa.me/" + targetPhone + "?text=" + encodeURIComponent(message);
-}
-</script> 
-</body> 
+            <div class="modal-body"> <p id="m-desc" style="white-space:pre-wrap;"></p> </div>
+            <button id="order-btn-main" class="btn-order" onclick="showConfirmation()">طلب الخدمة عبر واتساب 🟢</button>
+            <button onclick="closeModal()" style="margin-top:10px; border:none; background:none; color:#aaa; font-weight: bold; cursor: pointer;">إغلاق</button>
+        </div>
+    </div>
+    <script>
+        let currentS = null;
+        function render() {
+            document.getElementById("main-list").innerHTML = (window.db.services || []).map((s, i) => `
+                <div class="card">
+                    <strong style="font-size: 17px;">${s.i || "📦"} ${s.n}</strong>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+                        <span style="color:var(--main); font-weight:bold;">${s.p}</span>
+                        <button class="btn-more" onclick="openDetails(${i})">التفاصيل</button>
+                    </div>
+                </div>`).join("");
+        }
+        function openDetails(i) {
+            currentS = window.db.services[i];
+            document.getElementById("m-title").innerText = currentS.n;
+            document.getElementById("m-desc").innerText = currentS.d;
+            document.getElementById("confirmation-area").style.display = "none";
+            document.getElementById("order-btn-main").style.display = "block";
+            document.getElementById("details-view").style.display = "flex";
+        }
+        function closeModal() { document.getElementById("details-view").style.display = "none"; }
+        function formatPhone(p) { let phone = (p || "").replace(/\D/g, ""); if (phone.startsWith("05")) phone = "966" + phone.substring(1); return phone; }
+        function contactAdmin() { window.location.href = "https://wa.me/" + formatPhone(window.db.phonePublic); }
+        function showConfirmation() {
+            const confirmTop = document.getElementById("confirm-msg-top");
+            const confirmSub = document.getElementById("confirm-msg-sub");
+            if (currentS.w && currentS.w.trim().length > 5) {
+                confirmTop.innerText = "Ref: شكراً لثقتك بنا ❤️";
+                confirmSub.innerText = "سيتم تحويلك الآن إلى مقدم الخدمة لإكمال طلبك.";
+            } else {
+                confirmTop.innerText = "Ref: شكراً لثقتكم بنا ❤️";
+                confirmSub.innerText = "سيتم تحويلك الآن إلى المدير لتلبية طلبك.";
+            }
+            document.getElementById("confirmation-area").style.display = "block";
+            document.getElementById("order-btn-main").style.display = "none";
+        }
+        function finalRedirect() {
+            let targetPhone = (currentS.w && currentS.w.trim().length > 5) ? formatPhone(currentS.w) : formatPhone(window.db.phonePublic);
+            let message = "مرحباً، أريد طلب خدمة: " + currentS.n;
+            window.location.href = "https://wa.me/" + targetPhone + "?text=" + encodeURIComponent(message);
+        }
+    </script>
+</body>
 </html>
